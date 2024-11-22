@@ -11,16 +11,23 @@
 <body>
     <main>
         <div class="container">
-            <img class="logo" src="assets/images/logo.png" alt="Itens de compras de mercado">
+            <img class="logo" src="assets/images/logo.png" alt="Logo do Shopping List">
 
             <form class="form" action="#">
                 <input type="text" name="input" id="input" placeholder="Digite o item que deseja adicionar">
-                <button id="btn-submit">
-                    Salvar item
-                </button>
+                <div class="form__buttons">
+                    <button type="reset" id="btn-clean" class="form-btn">
+                        Limpar item
+                    </button>
+                    <button type="submit" id="btn-submit" class="form-btn">
+                        Salvar item
+                    </button>
+                </div>
+
             </form>
 
             <div class="items-list__wrapper">
+                <!-- //shopping list -->
                 <div class="items-list">
                     <header class="items-list__header">
                         <h1 class="items-list__header__title">
@@ -29,52 +36,40 @@
                         <hr class="divisor">
                     </header>
 
-                    <!-- <p class="items-list__description">
+                    <p class="items-list__description">
                         Sua lista está vazia. Adicione itens a ela para não esquecer nada na próxima compra!
-                    </p> -->
+                    </p>
 
-                    <ul class="items-list__items">
-                        <li class="items-list__item">
-                            <div class="item--wrapper">
-                                <div class="item--info">
+                    <ul id="shop-list" class="items-list__items">
+                        <!-- <li class="item">
+                            <div class="item__wrapper">
+                                <div class="item__info">
                                     <input type="checkbox" name="checkbox" id="checkbox-01" class="checkbox">
-                                    <label for="checkbox-01" class="item--name">Queijo Minas</label>
+                                    <label for="checkbox-01" class="item__name">Queijo Minas</label>
                                 </div>
-                                <div class="item--options">
-                                    <img src="assets/images/delete.svg" alt class="item--delete">
-                                    <img src="assets/images/edit.svg" alt class="item--edit">
-                                </div>
-                            </div>
-                            <p class="item--timing">
-                                Segunda-feira (30/02/2024) as 22:39
-                            </p>
-                        </li>
-
-                        <li class="items-list__item">
-                            <div class="item--wrapper">
-                                <div class="item--info">
-                                    <input type="checkbox" name="checkbox" id="checkbox-02" class="checkbox">
-                                    <label for="checkbox-02" class="item--name">Pizza de Calabresa</label>
-                                </div>
-                                <div class="item--options">
-                                    <img src="assets/images/delete.svg" alt class="item--delete">
-                                    <img src="assets/images/edit.svg" alt class="item--edit">
+                                <div class="item__options">
+                                    <img src="assets/images/delete.svg" alt class="item__delete">
+                                    <img src="assets/images/edit.svg" alt class="item__edit">
                                 </div>
                             </div>
-                            <p class="item--timing">
+                            <p class="item__timing">
                                 Segunda-feira (30/02/2024) as 22:39
                             </p>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
 
-                <div class="items-list">
+                <!-- //bougth list -->
+                <div id="purchased-list-div" class="items-list">
                     <header class="items-list__header">
                         <h2 class="items-list__header__title">
-                            Comprado
+                            Comprados
                         </h2>
                         <hr class="divisor">
                     </header>
+                    <ul id="purchased-list" class="items-list__items">
+
+                    </ul>
                 </div>
             </div>
         </div>

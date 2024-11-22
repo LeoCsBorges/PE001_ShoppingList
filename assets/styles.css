@@ -22,6 +22,7 @@ a {
 
 body {
     min-height: 100svh;
+    padding-block: 1rem;
     font-family: "Numans", sans-serif;
     font-size: 16px;
     font-weight: 400;
@@ -32,11 +33,15 @@ body {
     justify-content: space-around;
 }
 
+.hidden {
+    display: none;
+}
+
 .container {
     width: 90%;
     max-width: 440px;
     margin: auto;
-    padding: 3.5rem 1rem;
+    padding: 2rem 1.5rem 4rem 1.5rem;
     background-color: #FFF;
     border-radius: 16px;
     text-align: center;
@@ -44,15 +49,16 @@ body {
 }
 
 .logo {
-
+    max-height: 200px;
     margin-bottom: 1.5rem;
+    filter: drop-shadow(4px 8px 8px rgba(0, 0, 0, 0.25));
 }
 
 .form {
     display: flex;
     flex-direction: column;
-    gap: .5rem;
-    margin-bottom: 1.5rem;
+    gap: 1rem;
+    margin-bottom: 3rem;
 }
 
 .form #input {
@@ -60,36 +66,45 @@ body {
     font-size: 1rem;
     font-weight: 600;
     text-align: center;
-    border-radius: 24px;
+    border-radius: 16px;
     padding-inline: 1rem;
     padding-block: .75rem;
-    border: 1px solid var(--marinho);
+    border: 2px solid var(--coral);
     outline: none;
+    box-shadow: inset 2px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .form #input::placeholder {
     font-family: "Numans", sans-serif;
     font-weight: 400;
+    font-size: .875rem;
     color: var(--cinza-escuro);
 }
 
 .form #input:focus {
-    border-color: var(--ocre);
+    border: 2px solid var(--marinho);
 }
 
-.form #btn-submit {
-    max-width: 140px;
-    margin: auto;
-    padding: 1rem .75rem;
+.form__buttons {
+    display: flex;
+    justify-content: space-around;
+}
+
+.form-btn:focus {
+    outline: 2px solid var(--marinho);
+}
+
+.form-btn {
+    padding: .5rem 1rem;
     cursor: pointer;
     color: #FFF;
     font-family: "Numans", sans-serif;
-    font-size: 1.125rem;
+    font-size: 1rem;
     line-height: 1.5rem;
     border: none;
     outline: none;
     background-color: var(--coral);
-    border-radius: 24px;
+    border-radius: 12px;
 }
 
 .items-list__wrapper {
@@ -116,7 +131,7 @@ body {
 }
 
 .divisor {
-    border: 1px dotted var(--coral);
+    border: 1px solid var(--coral);
     margin-bottom: 1.5rem;
 }
 
@@ -127,11 +142,18 @@ body {
     gap: 1rem;
 }
 
-.items-list__item .item--wrapper {
+.item__wrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: .25rem;
+}
+
+.item__info {
+    width: 100%;
+    display: flex;
+    gap: .75rem;
+    align-items: center;
 }
 
 .checkbox {
@@ -144,36 +166,46 @@ body {
     accent-color: var(--marinho);
 }
 
-.items-list__item .item--name {
+.checkbox:checked~.item__name {
+    text-decoration: line-through;
+}
+
+.item__name {
+    flex-grow: 1;
     cursor: pointer;
+    text-align: left;
     font-size: 1rem;
     line-height: 1.25rem;
+    margin-right: 2rem;
 }
 
-.items-list__item .item--info {
-    display: flex;
-    gap: .5rem;
-    align-items: center;
-}
-
-.items-list__item .item--options {
+.item__options {
     user-select: none;
-    padding-inline: .5rem;
     display: flex;
-    justify-content: space-between;
     gap: 1rem;
 }
 
-.items-list__item .item--delete,
-.items-list__item .item--edit {
-    max-width: 100%;
+.item__option {
+    width: 16px;
+    height: 16px;
     cursor: pointer;
+    background: none;
+    border: none;
 }
 
-.items-list__item .item--timing {
+.item__option img {
+    width: 100%;
+    height: 100%;
+}
+
+.item__timing {
     text-align: left;
     font-size: .75rem;
     line-height: 1.25rem;
+}
+
+.purchased-item {
+    text-decoration: line-through;
 }
 
 
