@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/styles.css">
+    <title>Checklist</title>
+</head>
+
+<body>
+    <main>
+        <div class="container">
+            <img class="logo" src="assets/images/logo.png" alt="Itens de compras de mercado">
+
+            <form class="form" action="#">
+                <input type="text" name="input" id="input" placeholder="Digite o item que deseja adicionar">
+                <button id="btn-submit">
+                    Salvar item
+                </button>
+            </form>
+
+            <div class="items-list__wrapper">
+                <div class="items-list">
+                    <header class="items-list__header">
+                        <h1 class="items-list__header__title">
+                            Lista de compras
+                        </h1>
+                        <hr class="divisor">
+                    </header>
+
+                    <!-- <p class="items-list__description">
+                        Sua lista está vazia. Adicione itens a ela para não esquecer nada na próxima compra!
+                    </p> -->
+
+                    <ul class="items-list__items">
+                        <li class="items-list__item">
+                            <div class="item--wrapper">
+                                <div class="item--info">
+                                    <input type="checkbox" name="checkbox" id="checkbox-01" class="checkbox">
+                                    <label for="checkbox-01" class="item--name">Queijo Minas</label>
+                                </div>
+                                <div class="item--options">
+                                    <img src="assets/images/delete.svg" alt class="item--delete">
+                                    <img src="assets/images/edit.svg" alt class="item--edit">
+                                </div>
+                            </div>
+                            <p class="item--timing">
+                                Segunda-feira (30/02/2024) as 22:39
+                            </p>
+                        </li>
+
+                        <li class="items-list__item">
+                            <div class="item--wrapper">
+                                <div class="item--info">
+                                    <input type="checkbox" name="checkbox" id="checkbox-02" class="checkbox">
+                                    <label for="checkbox-02" class="item--name">Pizza de Calabresa</label>
+                                </div>
+                                <div class="item--options">
+                                    <img src="assets/images/delete.svg" alt class="item--delete">
+                                    <img src="assets/images/edit.svg" alt class="item--edit">
+                                </div>
+                            </div>
+                            <p class="item--timing">
+                                Segunda-feira (30/02/2024) as 22:39
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="items-list">
+                    <header class="items-list__header">
+                        <h2 class="items-list__header__title">
+                            Comprado
+                        </h2>
+                        <hr class="divisor">
+                    </header>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p class="footer__description">
+            Desenvolvido por <a href="https://github.com/LeoCsBorges" target="_blank">LeoCsBorges</a>, um projeto <a
+                href="https://cursos.alura.com.br/dashboard" target="_blank">Alura </a>sem fins lucrativos.
+        </p>
+    </footer>
+
+    <script src="assets/script.js"></script>
+</body>
+
+</html>
