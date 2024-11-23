@@ -79,8 +79,8 @@ function createElement(listItem) {
     item.setAttribute('data-index', itemsArray.length);
     itemWrapper.classList.add('item__wrapper');
     itemInfo.classList.add('item__info');
-    checkbox.classList.add('checkbox');
-    label.classList.add('item__name');
+    checkbox.classList.add('checkbox', 'shop');
+    label.classList.add('item__name', 'shop');
     itemOptions.classList.add('item__options');
     itemOption1.classList.add('item__option', 'item__option--delete');
     itemOption2.classList.add('item__option', 'item__option--edit');
@@ -95,10 +95,12 @@ function createElement(listItem) {
     itemOption2.append(editBtn);
 
     //setting element data
-    checkbox.setAttribute('id', `checkbox${itemsArray.length}`);
+    checkbox.setAttribute('id', `checkShop${itemsArray.length}`);
     checkbox.setAttribute('type', 'checkbox');
-    label.setAttribute('for', `checkbox${itemsArray.length}`);
-    label.setAttribute('id', `label${itemsArray.length}`);
+    checkbox.setAttribute('data-index', `${itemsArray.length}`);
+    label.setAttribute('for', `checkShop${itemsArray.length}`);
+    label.setAttribute('id', `labelShop${itemsArray.length}`);
+    label.setAttribute('data-index', `${itemsArray.length}`);
     label.innerHTML = capitalization(listItem);
     itemOption1.setAttribute('type', 'button');
     itemOption2.setAttribute('type', 'button');
@@ -110,9 +112,7 @@ function createElement(listItem) {
 
 
     //adding listeners
-    buyItemCheck(checkbox);
-    buyItemLabel(label);
-
+    changeItemStatus(checkbox);
 
     //adding the new item to the array of items
     itemsArray.push(item);
@@ -178,29 +178,50 @@ function formatTiming(date) {
     }
 }
 
-function buyItemCheck(check) {
-    check.addEventListener('click', function () {
+function changeItemStatus(check) {
+    check.addEventListener('change', function () {
+
         const parentItem = getParentItem(this)
+        const checkIndex = check.dataset.index
 
-        console.log(itemsArray[check])
+        // SHOP > PURCHASED
+        if (check.checked) {
+            //deleting and adding elements and changing classes
+            itemsArray.splice(checkIndex, 1);
+            this.classList.replace('shop', 'purchased');
+            this.nextSibling.classList.replace('shop', 'purchased');
+            itemsPurchasedArray.push(parentItem);
 
-        itemsArray.splice(1, 1);
-        console.log(itemsArray)
-        itemsPurchasedArray.push(parentItem);
-        console.log(itemsPurchasedArray)
+            //html dinamic elements
+            shopList.removeChild(parentItem);
+            purchasedList.appendChild(parentItem);
+            isListEmpty();
 
-        shopList.removeChild(parentItem);
-        purchasedList.appendChild(parentItem);
-        isListEmpty();
-    })
-}
+            //reset index of all SHOP items
+            resetShopItems();
 
+            //reset index of all PURCHASED items
+            resetPurchasedItems();
 
-function buyItemLabel(label) {
-    label.addEventListener('click', function () {
-        this.classList.add('purchased-item');
-        const parent = getParentItem(this);
-        itemsArray.splice(parent.dataset.index, 1)
+            //PURCHASED > SHOP
+        } else {
+            //deleting and adding elements and changing classes
+            itemsPurchasedArray.splice(checkIndex, 1);
+            this.classList.replace('purchased', 'shop');
+            this.nextSibling.classList.replace('purchased', 'shop');
+            itemsArray.push(parentItem);
+
+            //html dinamic elements
+            purchasedList.removeChild(parentItem);
+            shopList.appendChild(parentItem);
+            isListEmpty();
+
+            //reset index of all SHOP items
+            resetShopItems();
+
+            //reset index of all PURCHASED items
+            resetPurchasedItems();
+        }
     })
 }
 
@@ -219,5 +240,31 @@ function getParentItem(element) {
         element = element.parentElement;
     }
     return lastParents[2];
+}
+
+function resetShopItems() {
+    const allCheckboxesShop = document.querySelectorAll('.checkbox.shop');
+    const allLabelsShop = document.querySelectorAll('.item__name.shop');
+
+    for (cont = 0; cont < allCheckboxesShop.length; cont++) {
+        allCheckboxesShop[cont].setAttribute('id', `checkShop${cont}`);
+        allCheckboxesShop[cont].dataset.index = `${cont}`;
+        allLabelsShop[cont].setAttribute('for', `checkShop${cont}`);
+        allLabelsShop[cont].setAttribute('id', `labelShop${cont}`);
+        allLabelsShop[cont].dataset.index = `${cont}`;
+    }
+}
+
+function resetPurchasedItems() {
+    const allCheckboxesPurchased = document.querySelectorAll('.checkbox.purchased');
+    const allLabelspurchased = document.querySelectorAll('.item__name.purchased');
+
+    for (cont = 0; cont < allCheckboxesPurchased.length; cont++) {
+        allCheckboxesPurchased[cont].setAttribute('id', `checkPurchased${cont}`);
+        allCheckboxesPurchased[cont].dataset.index = `${cont}`;
+        allLabelspurchased[cont].setAttribute('for', `checkPurchased${cont}`);
+        allLabelspurchased[cont].setAttribute('id', `labelPurchased${cont}`);
+        allLabelspurchased[cont].dataset.index = `${cont}`;
+    }
 }
 
