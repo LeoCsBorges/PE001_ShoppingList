@@ -11,7 +11,7 @@ const itemsPurchasedArray = Array.from(document.querySelectorAll('.item .purchas
 
 isListEmpty();
 clearButton.addEventListener('click', cleanItem);
-submitButton.addEventListener('click', submitItem)
+submitButton.addEventListener('click', submitItem);
 
 function isListEmpty() {
     //validation: empty list or not
@@ -37,7 +37,6 @@ function cleanItem(event) {
 
 function submitItem(event) {
     event.preventDefault();
-    const itemsList = document.querySelector('.items-list__items');
 
     //input without any value
     if (inputField.value == '') {
@@ -49,7 +48,6 @@ function submitItem(event) {
     //create an new item
     createElement(inputField.value);
     renderItems();
-
 
     //creating an item and adding it to items array
     inputField.value = '';
@@ -69,20 +67,17 @@ function createElement(listItem) {
     const itemOptions = document.createElement('div');
     const itemOption1 = document.createElement('button');
     const itemOption2 = document.createElement('button');
-    const deleteBtn = document.createElement('img');
-    const editBtn = document.createElement('img');
     const timing = document.createElement('p');
     const date = new Date();
 
     //adding classes
     item.classList.add('item');
-    item.setAttribute('data-index', itemsArray.length);
     itemWrapper.classList.add('item__wrapper');
     itemInfo.classList.add('item__info');
     checkbox.classList.add('checkbox', 'shop');
     label.classList.add('item__name', 'shop');
     itemOptions.classList.add('item__options');
-    itemOption1.classList.add('item__option', 'item__option--delete');
+    itemOption1.classList.add('item__option', 'item__option--delete', 'shop');
     itemOption2.classList.add('item__option', 'item__option--edit');
     timing.classList.add('item__timing');
 
@@ -91,8 +86,6 @@ function createElement(listItem) {
     itemWrapper.append(itemInfo, itemOptions);
     itemInfo.append(checkbox, label);
     itemOptions.append(itemOption1, itemOption2);
-    itemOption1.append(deleteBtn);
-    itemOption2.append(editBtn);
 
     //setting element data
     checkbox.setAttribute('id', `checkShop${itemsArray.length}`);
@@ -103,16 +96,17 @@ function createElement(listItem) {
     label.setAttribute('data-index', `${itemsArray.length}`);
     label.innerHTML = capitalization(listItem);
     itemOption1.setAttribute('type', 'button');
+    itemOption1.setAttribute('data-index', `${itemsArray.length}`);
+    itemOption1.style.backgroundImage = "url('../assets/images/delete.svg')";
     itemOption2.setAttribute('type', 'button');
-    deleteBtn.setAttribute('src', 'assets/images/delete.svg');
-    deleteBtn.setAttribute('alt', 'Deletar');
-    editBtn.setAttribute('src', 'assets/images/edit.svg');
-    editBtn.setAttribute('alt', 'Editar');
+    itemOption2.style.backgroundImage = "url('../assets/images/edit.svg')";
     timing.innerHTML = formatTiming(date);
 
 
     //adding listeners
     changeItemStatus(checkbox);
+    deleteItem(itemOption1);
+    editItem(itemOption2);
 
     //adding the new item to the array of items
     itemsArray.push(item);
@@ -120,9 +114,19 @@ function createElement(listItem) {
 }
 
 function renderItems() {
+    //remove all shop items & fill within the array items
+    while (shopList.firstChild) {
+        shopList.removeChild(shopList.firstChild);
+    }
+
     itemsArray.forEach(function (item) {
         shopList.appendChild(item);
     })
+
+    //remove all purchased items & fill within the array purchased items
+    while (purchasedList.firstChild) {
+        purchasedList.removeChild(purchasedList.firstChild);
+    }
 
     itemsPurchasedArray.forEach(function (item) {
         purchasedList.appendChild(item);
@@ -181,8 +185,8 @@ function formatTiming(date) {
 function changeItemStatus(check) {
     check.addEventListener('change', function () {
 
-        const parentItem = getParentItem(this)
-        const checkIndex = check.dataset.index
+        const item = getItem(this);
+        const checkIndex = check.dataset.index;
 
         // SHOP > PURCHASED
         if (check.checked) {
@@ -190,11 +194,11 @@ function changeItemStatus(check) {
             itemsArray.splice(checkIndex, 1);
             this.classList.replace('shop', 'purchased');
             this.nextSibling.classList.replace('shop', 'purchased');
-            itemsPurchasedArray.push(parentItem);
+            item.querySelector('.item__option--delete').classList.replace('shop', 'purchased');
+            itemsPurchasedArray.push(item);
 
             //html dinamic elements
-            shopList.removeChild(parentItem);
-            purchasedList.appendChild(parentItem);
+            renderItems();
             isListEmpty();
 
             //reset index of all SHOP items
@@ -209,11 +213,11 @@ function changeItemStatus(check) {
             itemsPurchasedArray.splice(checkIndex, 1);
             this.classList.replace('purchased', 'shop');
             this.nextSibling.classList.replace('purchased', 'shop');
-            itemsArray.push(parentItem);
+            item.querySelector('.item__option--delete').classList.replace('purchased', 'shop');
+            itemsArray.push(item);
 
             //html dinamic elements
-            purchasedList.removeChild(parentItem);
-            shopList.appendChild(parentItem);
+            renderItems();
             isListEmpty();
 
             //reset index of all SHOP items
@@ -225,46 +229,72 @@ function changeItemStatus(check) {
     })
 }
 
-function deleteItem() {
+function deleteItem(btnDelete) {
+    btnDelete.addEventListener('click', function () {
 
+        //delete button from shop list
+        if (this.classList.contains('shop')) {
+            itemsArray.splice(this.dataset.index, 1);
+            renderItems();
+            resetShopItems();
+
+            //delete button from purchased list
+        } else {
+            itemsPurchasedArray.splice(this.dataset.index, 1);
+            renderItems();
+            resetPurchasedItems();
+        }
+    })
 }
 
-function editItem() {
+function editItem(btnEdit) {
+    btnEdit.addEventListener('click', function () {
+        const item = getItem(this);
+        const name = item.querySelector('.item__name').innerHTML;
+        const userInput = prompt('Digite o novo valor:');
 
+        item.querySelector('.item__name').innerHTML = capitalization(userInput);
+    })
 }
 
-function getParentItem(element) {
-    const lastParents = [];
+function getItem(element) {
+    let item;
     while (element.parentElement) {
-        lastParents.push(element.parentElement);
+        item = element.parentElement;
         element = element.parentElement;
+
+        if (element.classList.contains('item')) { break; }
     }
-    return lastParents[2];
+    return item;
 }
 
 function resetShopItems() {
     const allCheckboxesShop = document.querySelectorAll('.checkbox.shop');
     const allLabelsShop = document.querySelectorAll('.item__name.shop');
+    const allDeleteButtonsShop = document.querySelectorAll('.item__option--delete.shop');
 
-    for (cont = 0; cont < allCheckboxesShop.length; cont++) {
+    for (cont = 0; cont < itemsArray.length; cont++) {
         allCheckboxesShop[cont].setAttribute('id', `checkShop${cont}`);
         allCheckboxesShop[cont].dataset.index = `${cont}`;
         allLabelsShop[cont].setAttribute('for', `checkShop${cont}`);
         allLabelsShop[cont].setAttribute('id', `labelShop${cont}`);
         allLabelsShop[cont].dataset.index = `${cont}`;
+        allDeleteButtonsShop[cont].dataset.index = `${cont}`;
     }
 }
 
 function resetPurchasedItems() {
     const allCheckboxesPurchased = document.querySelectorAll('.checkbox.purchased');
     const allLabelspurchased = document.querySelectorAll('.item__name.purchased');
+    const allDeleteButtonsPurchased = document.querySelectorAll('.item__option--delete.purchased');
 
-    for (cont = 0; cont < allCheckboxesPurchased.length; cont++) {
+    for (cont = 0; cont < itemsPurchasedArray.length; cont++) {
         allCheckboxesPurchased[cont].setAttribute('id', `checkPurchased${cont}`);
         allCheckboxesPurchased[cont].dataset.index = `${cont}`;
         allLabelspurchased[cont].setAttribute('for', `checkPurchased${cont}`);
         allLabelspurchased[cont].setAttribute('id', `labelPurchased${cont}`);
         allLabelspurchased[cont].dataset.index = `${cont}`;
+        allDeleteButtonsPurchased[cont].dataset.index = `${cont}`;
     }
 }
 

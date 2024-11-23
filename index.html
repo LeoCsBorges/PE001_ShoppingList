@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/styles.css">
-    <title>Checklist</title>
+    <link rel="shortcut icon" href="favicon.png" type="image/png">
+    <title>[ Shopping List ]</title>
 </head>
 
 <body>
@@ -14,8 +15,9 @@
             <img class="logo" src="assets/images/logo.png" alt="Logo do Shopping List">
 
             <form class="form" action="#">
-                <input type="text" name="input" id="input" placeholder="Digite o item que deseja adicionar">
-                <div class="form__buttons">
+                <input type="text" name="input" id="input" placeholder="Digite o item que deseja adicionar"
+                    maxlength="30">
+                <div class=" form__buttons">
                     <button type="reset" id="btn-clean" class="form-btn">
                         Limpar item
                     </button>
@@ -44,17 +46,17 @@
                         <!-- <li class="item">
                             <div class="item__wrapper">
                                 <div class="item__info">
-                                    <input type="checkbox" name="checkbox" id="checkbox-01" class="checkbox">
-                                    <label for="checkbox-01" class="item__name">Queijo Minas</label>
+                                    <input class="checkbox shop" id="checkShop0" type="checkbox" data-index="0">
+                                    <label class="item__name shop" for="checkShop0" id="labelShop0" data-index="0">
+                                        Queijo Minas
+                                    </label>
                                 </div>
                                 <div class="item__options">
-                                    <img src="assets/images/delete.svg" alt class="item__delete">
-                                    <img src="assets/images/edit.svg" alt class="item__edit">
+                                    <button class="item__option item__option--delete shop" type="button" data-index="0"></button>
+                                    <button class="item__option item__option--edit" type="button"></button>
                                 </div>
                             </div>
-                            <p class="item__timing">
-                                Segunda-feira (30/02/2024) as 22:39
-                            </p>
+                            <p class="item__timing">Sábado (23/11/2024) às 14:40</p>
                         </li> -->
                     </ul>
                 </div>
@@ -68,7 +70,6 @@
                         <hr class="divisor">
                     </header>
                     <ul id="purchased-list" class="items-list__items">
-
                     </ul>
                 </div>
             </div>
