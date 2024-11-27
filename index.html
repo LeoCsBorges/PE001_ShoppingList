@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css" />
     <link rel="stylesheet" href="assets/styles.css">
     <link rel="shortcut icon" href="favicon.png" type="image/png">
     <title>[ Shopping List ]</title>
@@ -12,29 +13,31 @@
 <body>
     <main>
         <div class="container">
-            <img class="logo" src="assets/images/logo.png" alt="Logo do Shopping List">
+            <img id="main-logo" class="logo" src="assets/images/logo.png" alt="Logo do Shopping List">
 
             <form class="form" action="#">
                 <input type="text" name="input" id="input" placeholder="Digite o item que deseja adicionar"
-                    maxlength="30">
+                    maxlength="30" minlength="2">
                 <div class=" form__buttons">
                     <button type="reset" id="btn-clean" class="form-btn">
-                        Limpar item
+                        Limpar
                     </button>
                     <button type="submit" id="btn-submit" class="form-btn">
-                        Salvar item
+                        Adicionar
                     </button>
                 </div>
-
             </form>
 
             <div class="items-list__wrapper">
                 <!-- //shopping list -->
                 <div class="items-list">
                     <header class="items-list__header">
-                        <h1 class="items-list__header__title">
-                            Lista de compras
-                        </h1>
+                        <div class="items-list__header__wrapper">
+                            <h1 class="items-list__header__title">
+                                Lista de compras
+                            </h1>
+                            <img id="delete-shop-btn" src="assets/images/delete-list.png" alt="Deletar lista">
+                        </div>
                         <hr class="divisor">
                     </header>
 
@@ -64,9 +67,12 @@
                 <!-- //bougth list -->
                 <div id="purchased-list-div" class="items-list">
                     <header class="items-list__header">
-                        <h2 class="items-list__header__title">
-                            Comprados
-                        </h2>
+                        <div class="items-list__header__wrapper">
+                            <h2 class="items-list__header__title">
+                                Comprados
+                            </h2>
+                            <img id="delete-purchased-btn" src="assets/images/delete-list.png" alt="Deletar lista">
+                        </div>
                         <hr class="divisor">
                     </header>
                     <ul id="purchased-list" class="items-list__items">
@@ -78,11 +84,36 @@
 
     <footer>
         <p class="footer__description">
-            Desenvolvido por <a href="https://github.com/LeoCsBorges" target="_blank">LeoCsBorges</a>, um projeto <a
+            Desenvolvido por <a href="https://github.com/LeoCsBorges" target="_blank">LeoCsBorges</a>. Um projeto <a
                 href="https://cursos.alura.com.br/dashboard" target="_blank">Alura </a>sem fins lucrativos.
         </p>
     </footer>
 
+    <div id="modal" class="modal-wrapper">
+        <div class="backdrop" data-modal="close">
+            <div class="modal-content">
+                <button class="modal-close-btn" data-modal="close"></button>
+                <header class="modal-header">
+                    <img src="assets/images/delete-modal.png" alt>
+                    <h3 class="modal-title">
+                        Você tem certeza?
+                    </h3>
+                </header>
+                <div class="modal-custom-content">
+                    <p class="modal-custom-content__description">
+                        Deletar este item da lista? Esse processo não pode ser desfeito.
+                    </p>
+                    <div class="modal-custom-content__buttons">
+                        <button class="modal-btn modal-btn-cancel" data-modal="close">Cancelar</button>
+                        <button class="modal-btn modal-btn-confirm">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
     <script src="assets/script.js"></script>
 </body>
 

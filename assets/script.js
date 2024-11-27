@@ -7,11 +7,33 @@ const purchasedListDiv = document.querySelector('#purchased-list-div');
 const purchasedList = document.querySelector('#purchased-list');
 const itemsArray = Array.from(document.querySelectorAll('.item'));
 const itemsPurchasedArray = Array.from(document.querySelectorAll('.item .purchased-item'));
+const deleteShopList = document.getElementById('delete-shop-btn');
+const deletePurchasedList = document.getElementById('delete-purchased-btn');
+let itemIndexToDelete = null;
+let listToDelete = null;
 
 
+//form
 isListEmpty();
 clearButton.addEventListener('click', cleanItem);
 submitButton.addEventListener('click', submitItem);
+
+deleteShopList.addEventListener('click', function () {
+    if (!itemsArray.length == 0) {
+        itemsArray.length = 0;
+    }
+    renderItems();
+    resetShopItems();
+})
+
+deletePurchasedList.addEventListener('click', function () {
+    if (!itemsPurchasedArray.length == 0) {
+        itemsPurchasedArray.length = 0;
+    }
+    renderItems();
+    resetPurchasedItems();
+})
+
 
 function isListEmpty() {
     //validation: empty list or not
@@ -38,19 +60,40 @@ function cleanItem(event) {
 function submitItem(event) {
     event.preventDefault();
 
-    //input without any value
-    if (inputField.value == '') {
-        alert('Ops!... Por favor, preencha para adicionar o item à lista!');
-        inputField.focus();
-        return
+    //invalid input
+    if (inputField.value == '' || inputField.value.length <= 2) {
+        const tooltip = document.createElement('div');
+
+        tooltip.setAttribute('data-tippy-root', null);
+        document.querySelector('main').appendChild(tooltip);
+        addTooltip(tooltip);
+        setTimeout(function () {
+            document.querySelector('main').removeChild(tooltip);
+        }, 3000);
+        return;
     }
 
     //create an new item
     createElement(inputField.value);
     renderItems();
 
-    //creating an item and adding it to items array
+    //input clean and focus
     inputField.value = '';
+    inputField.focus();
+}
+
+function addTooltip(div) {
+    // tippyjs
+    tippy(inputField, {
+        content: 'Ops... Campo inválido!',
+        trigger: 'focus', //o focus precisar sair e voltar quando apertar enter
+        // hideOnClick: false,
+        appendTo: div,
+        zIndex: 9999,
+        arrow: true,
+        animation: 'scale',
+        theme: 'tomato',
+    });
     inputField.focus();
 }
 
@@ -231,18 +274,18 @@ function changeItemStatus(check) {
 
 function deleteItem(btnDelete) {
     btnDelete.addEventListener('click', function () {
+        const itemIndex = this.dataset.index;
+        let list = null;
 
-        //delete button from shop list
         if (this.classList.contains('shop')) {
-            itemsArray.splice(this.dataset.index, 1);
-            renderItems();
-            resetShopItems();
+            list = 'shop';
+            showModal(itemIndex, list);
+            return
 
-            //delete button from purchased list
         } else {
-            itemsPurchasedArray.splice(this.dataset.index, 1);
-            renderItems();
-            resetPurchasedItems();
+            list = 'purchased';
+            showModal(itemIndex, list);
+            return
         }
     })
 }
@@ -298,3 +341,43 @@ function resetPurchasedItems() {
     }
 }
 
+// modal closing on click event
+window.onclick = function (event) {
+    if (event.target.dataset.modal == 'close') {
+        document.querySelector('#modal').classList.remove('is-open');
+    }
+}
+
+//modal hide after a confirmation
+function hideModal() {
+    document.getElementById('modal').classList.remove('is-open');
+}
+
+// modal show and item to delete
+function showModal(item, list) {
+    document.getElementById('modal').classList.add('is-open');
+    itemIndexToDelete = item;
+    listToDelete = list;
+}
+
+document.querySelector('.modal-btn.modal-btn-confirm').addEventListener('click', modalDeleteConfirmation);
+
+function modalDeleteConfirmation() {
+    if (itemIndexToDelete) {
+        //shopping
+        if (listToDelete == 'shop') {
+            itemsArray.splice(itemIndexToDelete, 1);
+            renderItems();
+            resetShopItems();
+
+            //purchased
+        } else {
+            itemsPurchasedArray.splice(itemIndexToDelete, 1);
+            renderItems();
+            resetPurchasedItems();
+        }
+    }
+
+    hideModal();
+    return;
+}
