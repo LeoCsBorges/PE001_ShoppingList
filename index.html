@@ -48,14 +48,15 @@
                     <ul id="shop-list" class="items-list__items">
                         <!-- <li class="item">
                             <div class="item__wrapper">
-                                <div class="item__info">
-                                    <input class="checkbox shop" id="checkShop0" type="checkbox" data-index="0">
-                                    <label class="item__name shop" for="checkShop0" id="labelShop0" data-index="0">
+                                <label class="item__info">
+                                    <input class="checkbox shop" type="checkbox" data-index="0">
+                                    <span class="item__name shop" data-index="0">
                                         Queijo Minas
-                                    </label>
-                                </div>
+                                    </span>
+                                </label>
                                 <div class="item__options">
-                                    <button class="item__option item__option--delete shop" type="button" data-index="0"></button>
+                                    <button class="item__option item__option--delete shop" type="button"
+                                        data-index="0"></button>
                                     <button class="item__option item__option--edit" type="button"></button>
                                 </div>
                             </div>
@@ -90,19 +91,18 @@
     </footer>
 
     <div id="modal" class="modal-wrapper">
-        <div class="backdrop" data-modal="close">
+        <div class="backdrop">
             <div class="modal-content">
                 <button class="modal-close-btn" data-modal="close"></button>
                 <header class="modal-header">
-                    <img src="assets/images/delete-modal.png" alt>
+                    <img class="modal-img" src="" alt>
                     <h3 class="modal-title">
                         Você tem certeza?
                     </h3>
                 </header>
                 <div class="modal-custom-content">
-                    <p class="modal-custom-content__description">
-                        Deletar este item da lista? Esse processo não pode ser desfeito.
-                    </p>
+                    <p class="modal-custom-content__description"></p>
+                    <input type="text" class="input--edit hidden" maxlength="5">
                     <div class="modal-custom-content__buttons">
                         <button class="modal-btn modal-btn-cancel" data-modal="close">Cancelar</button>
                         <button class="modal-btn modal-btn-confirm">Confirmar</button>

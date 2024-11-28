@@ -7,33 +7,20 @@ const purchasedListDiv = document.querySelector('#purchased-list-div');
 const purchasedList = document.querySelector('#purchased-list');
 const itemsArray = Array.from(document.querySelectorAll('.item'));
 const itemsPurchasedArray = Array.from(document.querySelectorAll('.item .purchased-item'));
-const deleteShopList = document.getElementById('delete-shop-btn');
-const deletePurchasedList = document.getElementById('delete-purchased-btn');
-let itemIndexToDelete = null;
-let listToDelete = null;
+const deleteShopListBtn = document.getElementById('delete-shop-btn');
+const deletePurchasedListBtn = document.getElementById('delete-purchased-btn');
+let itemIndex = null;
+let itemList = null;
+let itemToEdit = null;
+let itemtoEditValue = null;
 
 
-//form
+//buttons
 isListEmpty();
-clearButton.addEventListener('click', cleanItem);
+clearButton.addEventListener('click', cleanInputItem);
 submitButton.addEventListener('click', submitItem);
-
-deleteShopList.addEventListener('click', function () {
-    if (!itemsArray.length == 0) {
-        itemsArray.length = 0;
-    }
-    renderItems();
-    resetShopItems();
-})
-
-deletePurchasedList.addEventListener('click', function () {
-    if (!itemsPurchasedArray.length == 0) {
-        itemsPurchasedArray.length = 0;
-    }
-    renderItems();
-    resetPurchasedItems();
-})
-
+deleteShopListBtn.addEventListener('click', deleteShopList);
+deletePurchasedListBtn.addEventListener('click', deletePurchasedList)
 
 function isListEmpty() {
     //validation: empty list or not
@@ -51,7 +38,7 @@ function isListEmpty() {
     }
 }
 
-function cleanItem(event) {
+function cleanInputItem(event) {
     event.preventDefault();
     inputField.value = '';
     inputField.focus();
@@ -86,8 +73,7 @@ function addTooltip(div) {
     // tippyjs
     tippy(inputField, {
         content: 'Ops... Campo inválido!',
-        trigger: 'focus', //o focus precisar sair e voltar quando apertar enter
-        // hideOnClick: false,
+        trigger: 'focus',
         appendTo: div,
         zIndex: 9999,
         arrow: true,
@@ -121,7 +107,7 @@ function createElement(listItem) {
     label.classList.add('item__name', 'shop');
     itemOptions.classList.add('item__options');
     itemOption1.classList.add('item__option', 'item__option--delete', 'shop');
-    itemOption2.classList.add('item__option', 'item__option--edit');
+    itemOption2.classList.add('item__option', 'item__option--edit', 'shop');
     timing.classList.add('item__timing');
 
     //setting element structure
@@ -153,7 +139,6 @@ function createElement(listItem) {
 
     //adding the new item to the array of items
     itemsArray.push(item);
-    return;
 }
 
 function renderItems() {
@@ -178,8 +163,7 @@ function renderItems() {
 }
 
 function formatTiming(date) {
-    return `${formatDay(date)} ${formatDate(date)} às ${formatHours(date)}`;
-
+    // Pesquisar sobre o `Intl.DateTimeFormat`
     function formatDay(date) {
         let day;
         switch (date.getDay()) {
@@ -223,6 +207,8 @@ function formatTiming(date) {
 
         return `${hours}:${minutes}`;
     }
+
+    return `${formatDay(date)} ${formatDate(date)} às ${formatHours(date)}`;
 }
 
 function changeItemStatus(check) {
@@ -238,6 +224,7 @@ function changeItemStatus(check) {
             this.classList.replace('shop', 'purchased');
             this.nextSibling.classList.replace('shop', 'purchased');
             item.querySelector('.item__option--delete').classList.replace('shop', 'purchased');
+            item.querySelector('.item__option--edit').classList.replace('shop', 'purchased');
             itemsPurchasedArray.push(item);
 
             //html dinamic elements
@@ -272,31 +259,35 @@ function changeItemStatus(check) {
     })
 }
 
+function deleteShopList() {
+    const description = 'Deseja apagar toda a lista? Esse processo não pode ser desfeito.'
+    const list = 'shop'
+    showModal(description, null, list, true);
+}
+
+function deletePurchasedList() {
+    const description = 'Deseja apagar toda a lista? Esse processo não pode ser desfeito.'
+    const list = 'purchased'
+    showModal(description, null, list, true);
+}
+
 function deleteItem(btnDelete) {
-    btnDelete.addEventListener('click', function () {
+    btnDelete.addEventListener('click', async function () {
+        const description = 'Deletar este item da lista? Esse processo não pode ser desfeito.'
         const itemIndex = this.dataset.index;
-        let list = null;
+        let list = this.classList.contains('shop') ? 'shop' : 'purchased';
 
-        if (this.classList.contains('shop')) {
-            list = 'shop';
-            showModal(itemIndex, list);
-            return
-
-        } else {
-            list = 'purchased';
-            showModal(itemIndex, list);
-            return
-        }
+        showModal(description, itemIndex, list, true);
     })
 }
 
 function editItem(btnEdit) {
     btnEdit.addEventListener('click', function () {
         const item = getItem(this);
-        const name = item.querySelector('.item__name').innerHTML;
-        const userInput = prompt('Digite o novo valor:');
+        const description = 'Digite a alteração que deseja fazer no item:';
+        let list = this.classList.contains('shop') ? 'shop' : 'purchased';
 
-        item.querySelector('.item__name').innerHTML = capitalization(userInput);
+        showModal(description, item, list, false);
     })
 }
 
@@ -341,43 +332,121 @@ function resetPurchasedItems() {
     }
 }
 
-// modal closing on click event
-window.onclick = function (event) {
-    if (event.target.dataset.modal == 'close') {
-        document.querySelector('#modal').classList.remove('is-open');
-    }
-}
-
 //modal hide after a confirmation
 function hideModal() {
     document.getElementById('modal').classList.remove('is-open');
+
+    //clear all items/list
+    itemIndex = null;
+    itemList = null;
+    itemToEdit = null;
+    itemtoEditValue = null;
 }
 
-// modal show and item to delete
-function showModal(item, list) {
-    document.getElementById('modal').classList.add('is-open');
-    itemIndexToDelete = item;
-    listToDelete = list;
-}
+//open modal in accordance with the feature
+function showModal(description, item, list, isDelete) {
+    const modal = document.getElementById('modal');
+    const descriptionElement = document.querySelector('.modal-custom-content__description');
+    const input = document.querySelector('.input--edit');
+    let img = document.querySelector('#modal img');
 
-document.querySelector('.modal-btn.modal-btn-confirm').addEventListener('click', modalDeleteConfirmation);
+    cleanModal();
+    modal.classList.add('is-open');
+    descriptionElement.innerHTML = description;
+    itemIndex = item;
+    itemList = list;
 
-function modalDeleteConfirmation() {
-    if (itemIndexToDelete) {
-        //shopping
-        if (listToDelete == 'shop') {
-            itemsArray.splice(itemIndexToDelete, 1);
-            renderItems();
-            resetShopItems();
+    //deleting modal
+    if (isDelete) {
+        img.src = '../assets/images/delete-modal.png';
 
-            //purchased
-        } else {
-            itemsPurchasedArray.splice(itemIndexToDelete, 1);
-            renderItems();
-            resetPurchasedItems();
-        }
+        //editing modal
+    } else {
+        img.src = '../assets/images/edit-modal.png';
+        input.classList.remove('hidden');
+        itemIndex = item.querySelector('.item__name').dataset.index;
+        input.value = item.querySelector('.item__name').innerHTML;
+        input.focus();
+        itemToEdit = true;
     }
 
-    hideModal();
-    return;
+    function cleanModal() {
+        description.innerHTML = '';
+        img.src = '';
+        document.querySelector('.input--edit').classList.add('hidden');
+    }
 }
+
+function modalConfirmation() {
+    //item to edit
+    if (itemToEdit) {
+        const newItemValue = document.querySelector('.input--edit').value;
+
+        if (itemList == 'shop') {
+            itemsArray[itemIndex].querySelector('.item__name').innerHTML = newItemValue;
+            hideModal();
+            return;
+
+        } else {
+            itemsPurchasedArray[itemIndex].querySelector('.item__name').innerHTML = newItemValue;
+            hideModal();
+            return;
+        }
+
+        //item or list to delete
+    } else {
+        //list delete
+        if (itemIndex == null && itemList == 'shop') {
+            if (!itemsArray.length == 0) {
+                itemsArray.length = 0;
+            }
+            renderItems();
+            resetShopItems();
+            hideModal();
+            return;
+        }
+
+        if (itemIndex == null && itemList == 'purchased') {
+            if (!itemsPurchasedArray.length == 0) {
+                itemsPurchasedArray.length = 0;
+            }
+            renderItems();
+            resetPurchasedItems();
+            hideModal();
+            return;
+        }
+
+        //item delete
+        if (itemIndex) {
+            //shopping
+            if (itemList == 'shop') {
+                itemsArray.splice(itemIndex, 1);
+                renderItems();
+                resetShopItems();
+                hideModal();
+                return;
+
+                //purchased
+            } else {
+                itemsPurchasedArray.splice(itemIndex, 1);
+                renderItems();
+                resetPurchasedItems();
+                hideModal();
+                return;
+            }
+        }
+    }
+}
+
+//modal listeners
+document.querySelector('.modal-btn.modal-btn-confirm').addEventListener('click', modalConfirmation);
+document.querySelectorAll('[data-modal').forEach((closeModalButton) => {
+    closeModalButton.addEventListener('click', hideModal)
+})
+document.querySelector('.backdrop').addEventListener('click', function (event) {
+    if (this === event.target) {
+        hideModal();
+    }
+})
+
+
