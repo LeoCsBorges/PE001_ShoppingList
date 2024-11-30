@@ -359,7 +359,6 @@ function showModal(description, item, list, isDelete) {
     //modal positioning
     window.addEventListener('resize', adjustModalPosition)
 
-
     //deleting modal
     if (isDelete) {
         img.src = '../assets/images/delete-modal.png';
@@ -385,8 +384,12 @@ function showModal(description, item, list, isDelete) {
         const windowHeight = window.innerHeight;
 
         if (windowHeight < 500) {
-            backdropElement.style.alignItems = 'end';
-            backdropElement.style.paddingBottom = '2rem';
+            console.log('entrou aqui')
+            backdropElement.style.alignItems = 'start';
+            backdropElement.style.paddingTop = '2.5rem';
+        } else {
+            backdropElement.style.alignItems = 'center';
+            backdropElement.style.paddingTop = '0';
         }
     }
 }
