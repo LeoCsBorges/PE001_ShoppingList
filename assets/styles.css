@@ -21,7 +21,7 @@ a {
 
 body {
     min-height: 100svh;
-    padding-block: 1rem;
+    padding-block: 3rem;
     font-family: "Numans", sans-serif;
     font-size: 16px;
     font-weight: 400;
@@ -274,7 +274,8 @@ body {
     backdrop-filter: blur(1px);
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: start;
+    padding-top: 5rem;
     z-index: 90;
 }
 
