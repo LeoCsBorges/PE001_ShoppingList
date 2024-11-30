@@ -356,6 +356,10 @@ function showModal(description, item, list, isDelete) {
     itemIndex = item;
     itemList = list;
 
+    //modal positioning
+    window.addEventListener('resize', adjustModalPosition)
+
+
     //deleting modal
     if (isDelete) {
         img.src = '../assets/images/delete-modal.png';
@@ -374,6 +378,16 @@ function showModal(description, item, list, isDelete) {
         description.innerHTML = '';
         img.src = '';
         document.querySelector('.input--edit').classList.add('hidden');
+    }
+
+    function adjustModalPosition() {
+        const backdropElement = document.querySelector('.backdrop');
+        const windowHeight = window.innerHeight;
+
+        if (windowHeight < 500) {
+            backdropElement.style.alignItems = 'end';
+            backdropElement.style.paddingBottom = '2rem';
+        }
     }
 }
 

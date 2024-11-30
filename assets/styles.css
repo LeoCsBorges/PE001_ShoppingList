@@ -274,13 +274,13 @@ body {
     backdrop-filter: blur(1px);
     display: flex;
     justify-content: center;
-    align-items: start;
-    padding-top: 4rem;
+    align-items: center;
     z-index: 90;
 }
 
 .modal-content {
     position: relative;
+    max-width: 300px;
     margin-inline: 2.5rem;
     padding: 2rem;
     background-color: #FFF;
