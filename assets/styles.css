@@ -275,7 +275,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: start;
-    padding-top: 5rem;
+    padding-top: 4rem;
     z-index: 90;
 }
 
