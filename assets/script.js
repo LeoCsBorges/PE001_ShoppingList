@@ -15,6 +15,8 @@ let itemToEdit = null;
 let itemtoEditValue = null;
 
 
+console.log(new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", }));
+
 //buttons
 isListEmpty();
 clearButton.addEventListener('click', cleanInputItem);
@@ -130,7 +132,6 @@ function createElement(listItem) {
     itemOption2.setAttribute('type', 'button');
     itemOption2.style.backgroundImage = "url('../assets/images/edit.svg')";
     timing.innerHTML = formatTiming(date);
-
 
     //adding listeners
     changeItemStatus(checkbox);
@@ -335,6 +336,7 @@ function resetPurchasedItems() {
 //modal hide after a confirmation
 function hideModal() {
     document.getElementById('modal').classList.remove('is-open');
+    document.body.style.overflow = 'auto';
 
     //clear all items/list
     itemIndex = null;
@@ -352,6 +354,7 @@ function showModal(description, item, list, isDelete) {
 
     cleanModal();
     modal.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
     descriptionElement.innerHTML = description;
     itemIndex = item;
     itemList = list;
