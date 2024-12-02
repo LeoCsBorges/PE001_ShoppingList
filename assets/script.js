@@ -343,11 +343,23 @@ function hideModal() {
     itemtoEditValue = null;
 }
 
+const inputEdit = document.querySelector('.input--edit');
+inputEdit.addEventListener('focus', function () {
+    const backdropElement = document.querySelector('.backdrop');
+    backdropElement.style.alignItems = 'start';
+    backdropElement.style.paddingTop = '2.5rem';
+})
+
+inputEdit.addEventListener('blur', function () {
+    const backdropElement = document.querySelector('.backdrop');
+    backdropElement.style.alignItems = 'center';
+    backdropElement.style.paddingTop = '0';
+})
+
 //open modal in accordance with the feature
 function showModal(description, item, list, isDelete) {
     const modal = document.getElementById('modal');
     const descriptionElement = document.querySelector('.modal-custom-content__description');
-    const input = document.querySelector('.input--edit');
     let img = document.querySelector('#modal img');
 
     document.body.style.overflow = 'hidden';
@@ -365,10 +377,10 @@ function showModal(description, item, list, isDelete) {
         //editing modal
     } else {
         img.src = '../assets/images/edit-modal.png';
-        input.classList.remove('hidden');
+        inputEdit.classList.remove('hidden');
         itemIndex = item.querySelector('.item__name').dataset.index;
-        input.value = item.querySelector('.item__name').innerHTML;
-        input.focus();
+        inputEdit.value = item.querySelector('.item__name').innerHTML;
+        inputEdit.focus();
         itemToEdit = true;
     }
 
@@ -450,21 +462,6 @@ document.querySelector('.backdrop').addEventListener('click', function (event) {
         hideModal();
     }
 })
-//modal positioning
-window.addEventListener('resize', adjustModalPosition);
 
-function adjustModalPosition() {
-    const backdropElement = document.querySelector('.backdrop');
-    const windowHeight = window.innerHeight;
-
-    if (windowHeight < 500) {
-        backdropElement.style.alignItems = 'start';
-        backdropElement.style.paddingTop = '2.5rem';
-
-    } else {
-        backdropElement.style.alignItems = 'center';
-        backdropElement.style.paddingTop = '0';
-    }
-}
 
 
