@@ -334,7 +334,6 @@ function resetPurchasedItems() {
 //modal hide after a confirmation
 function hideModal() {
     document.getElementById('modal').classList.remove('is-open');
-    document.body.style.overflow = 'auto';
 
     //clear all items/list
     itemIndex = null;
@@ -343,30 +342,12 @@ function hideModal() {
     itemtoEditValue = null;
 }
 
-const inputEdit = document.querySelector('.input--edit');
-let initialHeight = document.documentElement.clientHeight;
-
-window.addEventListener('resize', function () {
-    const backdropElement = this.document.querySelector('.backdrop');
-    let currentHeight = this.document.documentElement.clientHeight;
-
-    if (currentHeight < initialHeight) {
-        backdropElement.style.alignItems = 'start';
-        backdropElement.style.paddingTop = '2.5rem';
-
-    } else {
-        backdropElement.style.alignItems = 'center';
-        backdropElement.style.paddingTop = '0';
-    }
-})
-
 //open modal in accordance with the feature
 function showModal(description, item, list, isDelete) {
     const modal = document.getElementById('modal');
     const descriptionElement = document.querySelector('.modal-custom-content__description');
+    const inputEdit = document.querySelector('.input--edit');
     let img = document.querySelector('#modal img');
-
-    document.body.style.overflow = 'hidden';
 
     cleanModal();
     modal.classList.add('is-open');
@@ -376,10 +357,16 @@ function showModal(description, item, list, isDelete) {
 
     //deleting modal
     if (isDelete) {
+        const backdropElement = document.querySelector('.backdrop');
+        backdropElement.style.alignItems = 'center';
+        backdropElement.style.paddingTop = '0';
         img.src = '../assets/images/delete-modal.png';
 
         //editing modal
     } else {
+        const backdropElement = document.querySelector('.backdrop');
+        backdropElement.style.alignItems = 'start';
+        backdropElement.style.paddingTop = '2.5rem';
         img.src = '../assets/images/edit-modal.png';
         inputEdit.classList.remove('hidden');
         itemIndex = item.querySelector('.item__name').dataset.index;
