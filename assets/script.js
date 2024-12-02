@@ -344,16 +344,20 @@ function hideModal() {
 }
 
 const inputEdit = document.querySelector('.input--edit');
-inputEdit.addEventListener('focus', function () {
-    const backdropElement = document.querySelector('.backdrop');
-    backdropElement.style.alignItems = 'start';
-    backdropElement.style.paddingTop = '2.5rem';
-})
+let initialHeight = document.documentElement.clientHeight;
 
-inputEdit.addEventListener('blur', function () {
-    const backdropElement = document.querySelector('.backdrop');
-    backdropElement.style.alignItems = 'center';
-    backdropElement.style.paddingTop = '0';
+window.addEventListener('resize', function () {
+    const backdropElement = this.document.querySelector('.backdrop');
+    let currentHeight = this.document.documentElement.clientHeight;
+
+    if (currentHeight < initialHeight) {
+        backdropElement.style.alignItems = 'start';
+        backdropElement.style.paddingTop = '2.5rem';
+
+    } else {
+        backdropElement.style.alignItems = 'center';
+        backdropElement.style.paddingTop = '0';
+    }
 })
 
 //open modal in accordance with the feature
