@@ -48,7 +48,7 @@ function submitItem(event) {
     event.preventDefault();
 
     //invalid input
-    if (inputField.value == '' || inputField.value.length <= 2) {
+    if (inputField.value.trim() === '' || inputField.value.length <= 2) {
         const tooltip = document.createElement('div');
 
         tooltip.setAttribute('data-tippy-root', null);

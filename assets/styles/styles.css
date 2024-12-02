@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Krona+One&family=Numans&display=swap');
+@import url('form.css');
+@import url('itemsLists.css');
+@import url('tooltip.css');
+@import url('modal.css');
+
+:root {
+    --cinza-claro: #F9F9F9;
+    --cinza-escuro: #8A8A8A;
+    --coral: #F55B64;
+    --ocre: #C2373F;
+    --marinho: #131730;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+a {
+    color: #2c2b2b;
+    text-decoration: none;
+}
+
+body {
+    min-height: 100svh;
+    padding-block: 3rem;
+    font-family: "Numans", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    background: #f8f8f8 url('../images/bg.jpg') repeat top left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.hidden {
+    display: none;
+}
+
+.container {
+    width: 90%;
+    max-width: 440px;
+    margin: auto;
+    padding: 2rem 1.5rem 4rem 1.5rem;
+    background-color: #FFF;
+    border-radius: 16px;
+    text-align: center;
+    user-select: none;
+    box-shadow: 0px 0px 3px 1px #00000034;
+}
+
+.logo {
+    max-height: 200px;
+    margin-bottom: 2.5rem;
+    filter: drop-shadow(4px 8px 8px rgba(0, 0, 0, 0.25));
+}
+
+
+footer {
+    width: 100%;
+    padding: 1rem;
+}
+
+.footer__description {
+    text-align: center;
+    font-size: .75rem;
+    line-height: 1.25rem;
+    color: darkgray;
+}
+
+
+
+@media screen and (min-width: 500px) {
+    .container {
+        padding-inline: 3.5rem;
+    }
+}

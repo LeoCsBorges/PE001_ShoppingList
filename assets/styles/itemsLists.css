@@ -1,0 +1,119 @@
+.items-list__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.items-list__header__wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: .5rem;
+}
+
+.items-list__header__title {
+    text-align: left;
+    color: var(--coral);
+    font-family: "Krona One", sans-serif;
+    font-weight: 400;
+    font-size: 1.25rem;
+    line-height: 2rem;
+    margin-bottom: .5rem;
+}
+
+#delete-shop-btn,
+#delete-purchased-btn {
+    cursor: pointer;
+    opacity: .85;
+}
+
+.items-list__description {
+    text-align: left;
+    color: var(--marinho);
+    font-size: 1.125rem;
+    line-height: 1.5rem;
+}
+
+.divisor {
+    border: 1px solid var(--coral);
+    margin-bottom: 1.5rem;
+}
+
+.items-list__items {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.item {
+    border-bottom: dotted 1px #e2e2e2;
+}
+
+.item__wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .25rem;
+}
+
+.item__info {
+    width: 100%;
+    display: flex;
+    gap: .75rem;
+    align-items: center;
+}
+
+.checkbox {
+    cursor: pointer;
+    height: 24px;
+    width: 24px;
+}
+
+.checkbox:checked {
+    accent-color: var(--marinho);
+}
+
+.checkbox:checked~.item__name {
+    text-decoration: line-through;
+}
+
+.item__name {
+    flex-grow: 1;
+    cursor: pointer;
+    text-align: left;
+    font-size: 1rem;
+    line-height: 1.25rem;
+    margin-right: 2rem;
+}
+
+.item__options {
+    user-select: none;
+    display: flex;
+    gap: 1rem;
+}
+
+.item__option {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.item__option--delete,
+.item__option--edit {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.item__timing {
+    text-align: left;
+    font-size: .75rem;
+    line-height: 1.25rem;
+}
+
+.purchased-item {
+    text-decoration: line-through;
+}
