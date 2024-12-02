@@ -15,8 +15,6 @@ let itemToEdit = null;
 let itemtoEditValue = null;
 
 
-console.log(new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", }));
-
 //buttons
 isListEmpty();
 clearButton.addEventListener('click', cleanInputItem);
@@ -337,6 +335,7 @@ function resetPurchasedItems() {
 function hideModal() {
     document.getElementById('modal').classList.remove('is-open');
     document.body.style.overflow = 'auto';
+    window.removeEventListener('resize', adjustModalPosition);
 
     //clear all items/list
     itemIndex = null;
@@ -352,15 +351,15 @@ function showModal(description, item, list, isDelete) {
     const input = document.querySelector('.input--edit');
     let img = document.querySelector('#modal img');
 
+    //modal positioning
+    window.addEventListener('resize', adjustModalPosition);
+
     cleanModal();
     modal.classList.add('is-open');
     document.body.style.overflow = 'hidden';
     descriptionElement.innerHTML = description;
     itemIndex = item;
     itemList = list;
-
-    //modal positioning
-    window.addEventListener('resize', adjustModalPosition)
 
     //deleting modal
     if (isDelete) {
