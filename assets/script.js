@@ -335,7 +335,6 @@ function resetPurchasedItems() {
 function hideModal() {
     document.getElementById('modal').classList.remove('is-open');
     document.body.style.overflow = 'auto';
-    window.removeEventListener('resize', adjustModalPosition);
 
     //clear all items/list
     itemIndex = null;
@@ -351,12 +350,10 @@ function showModal(description, item, list, isDelete) {
     const input = document.querySelector('.input--edit');
     let img = document.querySelector('#modal img');
 
-    //modal positioning
-    window.addEventListener('resize', adjustModalPosition);
+    document.body.style.overflow = 'hidden';
 
     cleanModal();
     modal.classList.add('is-open');
-    document.body.style.overflow = 'hidden';
     descriptionElement.innerHTML = description;
     itemIndex = item;
     itemList = list;
@@ -379,20 +376,6 @@ function showModal(description, item, list, isDelete) {
         description.innerHTML = '';
         img.src = '';
         document.querySelector('.input--edit').classList.add('hidden');
-    }
-
-    function adjustModalPosition() {
-        const backdropElement = document.querySelector('.backdrop');
-        const windowHeight = window.innerHeight;
-
-        if (windowHeight < 500) {
-            console.log('entrou aqui')
-            backdropElement.style.alignItems = 'start';
-            backdropElement.style.paddingTop = '2.5rem';
-        } else {
-            backdropElement.style.alignItems = 'center';
-            backdropElement.style.paddingTop = '0';
-        }
     }
 }
 
@@ -467,5 +450,21 @@ document.querySelector('.backdrop').addEventListener('click', function (event) {
         hideModal();
     }
 })
+//modal positioning
+window.addEventListener('resize', adjustModalPosition);
+
+function adjustModalPosition() {
+    const backdropElement = document.querySelector('.backdrop');
+    const windowHeight = window.innerHeight;
+
+    if (windowHeight < 500) {
+        backdropElement.style.alignItems = 'start';
+        backdropElement.style.paddingTop = '2.5rem';
+
+    } else {
+        backdropElement.style.alignItems = 'center';
+        backdropElement.style.paddingTop = '0';
+    }
+}
 
 
