@@ -10,3 +10,15 @@
 .tippy-box[data-theme~='tomato'][data-placement^='top']>.tippy-arrow::before {
     border-top-color: var(--coral);
 }
+
+.tippy-box[data-theme~='avocado'] {
+    background-color: #7bc84a;
+    color: rgb(255, 255, 255);
+    font-size: .75rem;
+    font-weight: 600;
+    opacity: .9;
+}
+
+.tippy-box[data-theme~='avocado'][data-placement^='top']>.tippy-arrow::before {
+    border-top-color: #7bc84a;
+}

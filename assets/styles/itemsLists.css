@@ -27,7 +27,7 @@
     opacity: .85;
 }
 
-.items-list__description {
+.shopping-list__description {
     text-align: left;
     color: var(--marinho);
     font-size: 1.125rem;
@@ -85,6 +85,7 @@
     font-size: 1rem;
     line-height: 1.25rem;
     margin-right: 2rem;
+    text-transform: capitalize;
 }
 
 .item__options {

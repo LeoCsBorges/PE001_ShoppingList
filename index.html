@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css" />
     <link rel="stylesheet" href="assets/styles/styles.css">
     <link rel="shortcut icon" href="favicon.png" type="image/png">
-    <title>[ Shopping List ]</title>
+    <title>Shopping List</title>
 </head>
 
 <body>
@@ -15,14 +15,14 @@
         <div class="container">
             <img id="main-logo" class="logo" src="assets/images/logo.png" alt="Logo do Shopping List">
 
-            <form class="form" action="#">
+            <form class="form" action="#" id="create-item-form">
                 <input type="text" name="input" id="input" placeholder="Digite o item que deseja adicionar"
                     maxlength="30" minlength="2">
                 <div class=" form__buttons">
-                    <button type="reset" id="btn-clean" class="form-btn">
+                    <button type="reset" id="clear-input-btn" class="form-btn">
                         Limpar
                     </button>
-                    <button type="submit" id="btn-submit" class="form-btn">
+                    <button type="submit" id="submit-input-btn" class="form-btn">
                         Adicionar
                     </button>
                 </div>
@@ -41,7 +41,7 @@
                         <hr class="divisor">
                     </header>
 
-                    <p class="items-list__description">
+                    <p class="shopping-list__description hidden">
                         Sua lista está vazia. Adicione itens a ela para não esquecer nada na próxima compra!
                     </p>
 
@@ -66,7 +66,7 @@
                 </div>
 
                 <!-- //bougth list -->
-                <div id="purchased-list-div" class="items-list">
+                <div id="purchased-list-div" class="items-list hidden">
                     <header class="items-list__header">
                         <div class="items-list__header__wrapper">
                             <h2 class="items-list__header__title">
@@ -114,7 +114,8 @@
 
     <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
-    <script src="assets/scripts/script.js"></script>
+    <!-- <script src="assets/scripts/script.js" type="module"></script> -->
+    <script type="module" src="assets/js/script.js"></script>
 </body>
 
 </html>
