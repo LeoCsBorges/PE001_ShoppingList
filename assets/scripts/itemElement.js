@@ -1,6 +1,7 @@
-import * as itemStorage from "./itemStorage.js";
+import { toggle, list } from "./itemStorage.js";
 import { isListEmpty } from "./validations.js";
 import { showModal } from "./modal.js";
+
 
 export function renderItems() {
     //remove all html elements from the lists
@@ -9,10 +10,9 @@ export function renderItems() {
     shopList.innerHTML = '';
     purchasedList.innerHTML = '';
 
-
     //fill the lists with html elements
-    const shoppingItems = itemStorage.list().filter((item) => !item.checked);
-    const purchasedItems = itemStorage.list().filter((item) => item.checked);
+    const shoppingItems = list().filter((item) => !item.checked);
+    const purchasedItems = list().filter((item) => item.checked);
 
     shoppingItems.forEach(function (item) {
         const itemHtmlElement = createItemHtmlElement(item);
@@ -29,12 +29,42 @@ export function renderItems() {
 }
 
 export function deleteList(deleteListButton) {
-    const content = (deleteListButton.id == 'delete-shop-btn') ? 'Apagar a Lista de Compras? Esse processo não pode ser desfeito.' : 'Apagar a Lista de Comprados? Esse processo não pode ser desfeito.';
+    const feature = (deleteListButton.id == 'delete-shop-btn') ? 'delete-shop-list' : 'delete-purchased-list';
+    const description = (deleteListButton.id == 'delete-shop-btn') ? 'Apagar a Lista de Compras? Esse processo não pode ser desfeito.' : 'Apagar a Lista de Comprados? Esse processo não pode ser desfeito.';
     const imgSrc = '../assets/images/delete-list-modal.png';
     const itemIndex = null;
-    const input = false;
 
-    showModal(content, imgSrc, itemIndex, input);
+    showModal(feature, description, imgSrc, itemIndex);
+}
+
+function addRemoveListener(deleteButton) {
+    deleteButton.addEventListener('click', function () {
+        const feature = 'delete-item';
+        const description = 'Deletar este item da lista? Esse processo não pode ser desfeito.';
+        const imgSrc = '../assets/images/delete-modal.png';
+        const itemIndex = this.dataset.index;
+
+        showModal(feature, description, imgSrc, itemIndex);
+    })
+}
+
+function addEditListener(editButton) {
+    editButton.addEventListener('click', function () {
+        const feature = 'edit-item';
+        const description = 'Digite a alteração que deseja fazer no item:';
+        const imgSrc = '../assets/images/edit-modal.png';
+        const itemParent = getItemNode(this);
+        const itemIndex = itemParent.querySelector('.checkbox').dataset.index;
+
+        showModal(feature, description, imgSrc, itemIndex);
+    })
+}
+
+function addToggleListener(checkbox) {
+    checkbox.addEventListener('change', function () {
+        toggle(checkbox);
+        renderItems();
+    })
 }
 
 function createItemHtmlElement(itemObject) {
@@ -60,7 +90,7 @@ function createItemHtmlElement(itemObject) {
     timing.classList.add('item__timing');
 
     //setting element data
-    const index = itemStorage.list().indexOf(itemObject);
+    const index = list().indexOf(itemObject);
     checkbox.setAttribute('type', 'checkbox');
     checkbox.setAttribute('data-index', `${index}`);
     span.setAttribute('data-index', `${index}`);
@@ -87,44 +117,15 @@ function createItemHtmlElement(itemObject) {
     return item;
 }
 
-function addToggleListener(checkbox) {
-    checkbox.addEventListener('change', function () {
-        itemStorage.toggle(checkbox);
-        renderItems();
-    })
+function getItemNode(element) {
+    let item;
+    while (element.parentElement) {
+        item = element.parentElement;
+        element = element.parentElement;
+
+        if (element.classList.contains('item')) { break; }
+    }
+    return item;
 }
-
-function addRemoveListener(deleteButton) {
-    deleteButton.addEventListener('click', function () {
-        const content = 'Deletar este item da lista? Esse processo não pode ser desfeito.';
-        const imgSrc = '../assets/images/delete-modal.png';
-        const itemIndex = this.dataset.index;
-        const input = false;
-
-        showModal(content, imgSrc, itemIndex, input);
-    })
-}
-
-function addEditListener(editButton) {
-    editButton.addEventListener('click', function () {
-        const content = 'Digite a alteração que deseja fazer no item:';
-        const imgSrc = '../assets/images/edit-modal.png';
-        const itemIndex = this.dataset.index;
-        const input = true;
-
-        showModal(content, imgSrc, itemIndex, input);
-    })
-}
-
-// function getItemNode(element) {
-//     let item;
-//     while (element.parentElement) {
-//         item = element.parentElement;
-//         element = element.parentElement;
-
-//         if (element.classList.contains('item')) { break; }
-//     }
-//     return item;
-// }
 
 

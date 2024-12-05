@@ -29,7 +29,7 @@ export function submitForm(event) {
     //valid
     validInputTooltip();
 
-    //create item object
+    //create item object & render html elements
     createItemObject(input.value, formatDateObj(new Date()), false);
 
     //render html elements and restart the process
