@@ -1,5 +1,6 @@
-import { isListEmpty } from "./validations.js";
 import * as itemStorage from "./itemStorage.js";
+import { isListEmpty } from "./validations.js";
+import { showModal } from "./modal.js";
 
 export function renderItems() {
     //remove all html elements from the lists
@@ -25,6 +26,15 @@ export function renderItems() {
     })
 
     isListEmpty();
+}
+
+export function deleteList(deleteListButton) {
+    const content = (deleteListButton.id == 'delete-shop-btn') ? 'Apagar a Lista de Compras? Esse processo não pode ser desfeito.' : 'Apagar a Lista de Comprados? Esse processo não pode ser desfeito.';
+    const imgSrc = '../assets/images/delete-list-modal.png';
+    const itemIndex = null;
+    const input = false;
+
+    showModal(content, imgSrc, itemIndex, input);
 }
 
 function createItemHtmlElement(itemObject) {
@@ -69,21 +79,52 @@ function createItemHtmlElement(itemObject) {
     itemOptions.append(itemOption1, itemOption2);
 
     //adding buttons listeners
-    // toggleItem(checkbox);
-    // removeItem(itemOption1);
-    // editItem(itemOption2);
+    addToggleListener(checkbox);
+    addRemoveListener(itemOption1);
+    addEditListener(itemOption2);
 
     //returning the html item element
     return item;
 }
 
-function getItemNode(element) {
-    let item;
-    while (element.parentElement) {
-        item = element.parentElement;
-        element = element.parentElement;
-
-        if (element.classList.contains('item')) { break; }
-    }
-    return item;
+function addToggleListener(checkbox) {
+    checkbox.addEventListener('change', function () {
+        itemStorage.toggle(checkbox);
+        renderItems();
+    })
 }
+
+function addRemoveListener(deleteButton) {
+    deleteButton.addEventListener('click', function () {
+        const content = 'Deletar este item da lista? Esse processo não pode ser desfeito.';
+        const imgSrc = '../assets/images/delete-modal.png';
+        const itemIndex = this.dataset.index;
+        const input = false;
+
+        showModal(content, imgSrc, itemIndex, input);
+    })
+}
+
+function addEditListener(editButton) {
+    editButton.addEventListener('click', function () {
+        const content = 'Digite a alteração que deseja fazer no item:';
+        const imgSrc = '../assets/images/edit-modal.png';
+        const itemIndex = this.dataset.index;
+        const input = true;
+
+        showModal(content, imgSrc, itemIndex, input);
+    })
+}
+
+// function getItemNode(element) {
+//     let item;
+//     while (element.parentElement) {
+//         item = element.parentElement;
+//         element = element.parentElement;
+
+//         if (element.classList.contains('item')) { break; }
+//     }
+//     return item;
+// }
+
+

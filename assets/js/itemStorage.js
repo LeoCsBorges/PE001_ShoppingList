@@ -1,10 +1,5 @@
 const items = [];
 
-
-export function list() {
-    return [...items];
-}
-
 export function createItemObject(name, date, boolean) {
     const item = {
         title: name,
@@ -13,6 +8,10 @@ export function createItemObject(name, date, boolean) {
     }
 
     items.push(item);
+}
+
+export function list() {
+    return [...items];
 }
 
 export function edit(editBtn) {
@@ -25,18 +24,13 @@ export function edit(editBtn) {
     })
 }
 
-export function remove(deleteBtn) {
-    deleteBtn.addEventListener('click', function () {
-        items.splice(this.dataset.index, 1);
-        renderItems();
-    })
+export function remove(index) {
+    items.splice(index, 1);
+    console.log(items)
 }
 
-export function toogle(checkbox) {
-    checkbox.addEventListener('change', function () {
-        items[this.dataset.index].checked = (items[this.dataset.index].checked == false) ? true : false;;
-        renderItems();
-    })
+export function toggle(checkbox) {
+    items[checkbox.dataset.index].checked = (items[checkbox.dataset.index].checked == false) ? true : false;
 }
 
 
