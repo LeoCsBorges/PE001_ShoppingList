@@ -22,8 +22,8 @@ export function remove(index) {
     items.splice(index, 1);
 }
 
-export function toggle(checkbox) {
-    items[checkbox.dataset.index].checked = (items[checkbox.dataset.index].checked == false) ? true : false;
+export function toggle(index) {
+    items[index].checked = (items[index].checked == false) ? true : false;
 }
 
 

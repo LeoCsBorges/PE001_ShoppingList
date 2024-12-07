@@ -26,7 +26,7 @@
 }
 
 .form #input:focus {
-    border: 2px solid var(--marinho);
+    border: 2px solid var(--azul-primario);
 }
 
 .form__buttons {

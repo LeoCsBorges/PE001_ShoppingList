@@ -62,7 +62,7 @@ function addEditListener(editButton) {
 
 function addToggleListener(checkbox) {
     checkbox.addEventListener('change', function () {
-        toggle(checkbox);
+        toggle(this.dataset.index);
         renderItems();
     })
 }

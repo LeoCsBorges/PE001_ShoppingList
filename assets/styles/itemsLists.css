@@ -71,7 +71,7 @@
 }
 
 .checkbox:checked {
-    accent-color: var(--marinho);
+    accent-color: var(--azul-primario);
 }
 
 .checkbox:checked~.item__name {

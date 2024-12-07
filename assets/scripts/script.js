@@ -1,5 +1,9 @@
 import { clearInput, submitForm } from "./formElements.js";
 import { deleteList } from "./itemElement.js";
+import { isListEmpty } from "./validations.js";
+
+//on page load
+document.addEventListener('DOMContentLoaded', isListEmpty);
 
 //clear form button
 document.querySelector('#clear-input-btn').addEventListener('click', clearInput);
