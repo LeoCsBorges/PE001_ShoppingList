@@ -1,9 +1,9 @@
-import { inputValidation, validInputTooltip, invalidInputTooltip } from "./validations.js";
+import { inputValidation } from "./validations.js";
 import { formatDateObj } from "./formatDateObj.js"
 import { createItemObject } from "./itemStorage.js"
 import { renderItems } from "./itemElement.js";
-const input = document.querySelector('#input');
 
+const input = document.querySelector('#input');
 
 //form buttons
 export function clearInput() {
@@ -17,16 +17,12 @@ export function clearInput() {
 export function submitForm(event) {
     event.preventDefault();
 
-    //invalid
     if (!inputValidation()) {
-        invalidInputTooltip();
+        //invalid input
         return;
     }
 
-    //valid
-    validInputTooltip();
-
-    //create item object & render html elements
+    //create an item object
     createItemObject(input.value, formatDateObj(new Date()), false);
 
     //render html elements and restart the process

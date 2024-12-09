@@ -27,22 +27,31 @@ export function isListEmpty() {
 }
 
 export function inputValidation() {
+    try {
+        if (input.value.trim() == '') {
+            throw new Error('Ops... o item está vazio.');
+        }
+        if (input.value.length < 3) {
+            throw new Error('Ops... o item precisa ter pelo menos 3 caracteres.');
+        }
+        if (!isNaN(input.value)) {
+            throw new Error('Ops... o item não pode conter apenas números.');
+        }
+        validInputTooltip('Item adicionado à lista!');
+        return true;
 
-    if (input.value.trim() == '' || input.value.length <= 2) {
+    } catch (error) {
+        invalidInputTooltip(error.message);
         return false;
     }
-
-    return true;
 }
 
-export function invalidInputTooltip() {
-    const content = 'Ops... item inválido!';
+export function invalidInputTooltip(message) {
     const theme = 'tomato';
-    inputToolTip(input, content, theme);
+    inputToolTip(input, message, theme);
 }
 
-export function validInputTooltip() {
-    const content = 'Item adicionado à lista!';
+export function validInputTooltip(message) {
     const theme = 'avocado';
-    inputToolTip(input, content, theme);
+    inputToolTip(input, message, theme);
 }
