@@ -1,9 +1,14 @@
-import { clearInput, submitForm } from "./formElements.js";
-import { deleteList } from "./itemElement.js";
+import { fromLocalStorage } from "./itemStorage.js";
 import { isListEmpty } from "./validations.js";
+import { deleteList, renderItems } from "./itemElement.js";
+import { clearInput, submitForm } from "./formElements.js";
 
 //on page load
-document.addEventListener('DOMContentLoaded', isListEmpty);
+document.addEventListener('DOMContentLoaded', function () {
+    fromLocalStorage();
+    isListEmpty();
+    renderItems();
+});
 
 //clear form button
 document.querySelector('#clear-input-btn').addEventListener('click', clearInput);

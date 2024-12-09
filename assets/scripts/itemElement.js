@@ -25,6 +25,7 @@ export function renderItems() {
         purchasedList.appendChild(itemHtmlElement);
     })
 
+    storage.toLocalStorage();
     isListEmpty();
 }
 
