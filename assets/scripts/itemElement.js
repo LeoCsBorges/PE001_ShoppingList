@@ -1,4 +1,4 @@
-import { toggle, list } from "./itemStorage.js";
+import * as storage from "./itemStorage.js";
 import { isListEmpty } from "./validations.js";
 import { showModal } from "./modal.js";
 
@@ -11,8 +11,8 @@ export function renderItems() {
     purchasedList.innerHTML = '';
 
     //fill the lists with html elements
-    const shoppingItems = list().filter((item) => !item.checked);
-    const purchasedItems = list().filter((item) => item.checked);
+    const shoppingItems = storage.list().filter((item) => !item.checked);
+    const purchasedItems = storage.list().filter((item) => item.checked);
 
     shoppingItems.forEach(function (item) {
         const itemHtmlElement = createItemHtmlElement(item);
@@ -29,40 +29,66 @@ export function renderItems() {
 }
 
 export function deleteList(deleteListButton) {
-    const feature = (deleteListButton.id == 'delete-shop-btn') ? 'delete-shop-list' : 'delete-purchased-list';
-    const description = (deleteListButton.id == 'delete-shop-btn') ? 'Apagar a Lista de Compras? Esse processo não pode ser desfeito.' : 'Apagar a Lista de Comprados? Esse processo não pode ser desfeito.';
+    const shopList = (deleteListButton.id == 'delete-shop-btn') ? true : false;
+    const description = (shopList) ? 'Apagar a Lista de Compras? Esse processo não pode ser desfeito.' : 'Apagar a Lista de Comprados? Esse processo não pode ser desfeito.';
     const imgSrc = '../assets/images/delete-list-modal.png';
     const itemIndex = null;
+    const input = false;
 
-    showModal(feature, description, imgSrc, itemIndex);
+    showModal(description, imgSrc, itemIndex, input).then(() => {
+        //shopping items list delete
+        if (shopList) {
+            const shoppingItems = storage.list().filter((item) => !item.checked);
+
+            shoppingItems.forEach(function (item) {
+                storage.remove(storage.list().indexOf(item));
+            })
+            renderItems();
+        }
+        //purchased items list delete
+        else {
+            const purchasedItems = storage.list().filter((item) => item.checked);
+
+            purchasedItems.forEach(function (item) {
+                storage.remove(storage.list().indexOf(item));
+            })
+            renderItems();
+        }
+    })
 }
 
 function addRemoveListener(deleteButton) {
     deleteButton.addEventListener('click', function () {
-        const feature = 'delete-item';
         const description = 'Deletar este item da lista? Esse processo não pode ser desfeito.';
         const imgSrc = '../assets/images/delete-modal.png';
         const itemIndex = this.dataset.index;
+        const input = false;
 
-        showModal(feature, description, imgSrc, itemIndex);
+        showModal(description, imgSrc, itemIndex, input).then(() => {
+            storage.remove(itemIndex);
+            renderItems();
+        })
     })
 }
 
-function addEditListener(editButton) {
+async function addEditListener(editButton) {
     editButton.addEventListener('click', function () {
-        const feature = 'edit-item';
         const description = 'Digite a alteração que deseja fazer no item:';
         const imgSrc = '../assets/images/edit-modal.png';
         const itemParent = getItemNode(this);
         const itemIndex = itemParent.querySelector('.checkbox').dataset.index;
+        const input = true;
 
-        showModal(feature, description, imgSrc, itemIndex);
+        showModal(description, imgSrc, itemIndex, input).then(() => {
+            storage.edit(itemIndex, document.querySelector('.input--edit').value);
+            renderItems();
+        })
     })
 }
 
 function addToggleListener(checkbox) {
     checkbox.addEventListener('change', function () {
-        toggle(this.dataset.index);
+        storage.toggle(this.dataset.index);
         renderItems();
     })
 }
@@ -90,7 +116,7 @@ function createItemHtmlElement(itemObject) {
     timing.classList.add('item__timing');
 
     //setting element data
-    const index = list().indexOf(itemObject);
+    const index = storage.list().indexOf(itemObject);
     checkbox.setAttribute('type', 'checkbox');
     checkbox.setAttribute('data-index', `${index}`);
     span.setAttribute('data-index', `${index}`);

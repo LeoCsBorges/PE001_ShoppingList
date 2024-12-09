@@ -1,5 +1,4 @@
-import { renderItems } from "./itemElement.js";
-import { list, remove, edit } from "./itemStorage.js";
+import { list } from "./itemStorage.js";
 
 //modal listeners
 document.querySelector('.modal-close-btn').addEventListener('click', hideModal);
@@ -11,73 +10,62 @@ document.querySelector('.backdrop').addEventListener('click', function (event) {
     }
 })
 
-let modalFeature = '';
-let itemIndex = '';
+let moduleResolvePromise;
+let moduleRejectPromise;
 
-export function showModal(feature, description, imgSrc, index) {
-    modalFeature = feature;
-    itemIndex = index;
+export function showModal(description, imgSrc, index, hasInput) {
+    return new Promise((resolve, reject) => {
+        moduleResolvePromise = resolve;
+        moduleRejectPromise = reject;
 
-    document.querySelector('#modal').classList.add('is-open');
-    document.querySelector('.modal-custom-content__description').innerHTML = description;
-    document.querySelector('.modal-img').src = imgSrc;
+        document.querySelector('#modal').classList.add('is-open');
+        document.querySelector('.modal-custom-content__description').innerHTML = description;
+        document.querySelector('.modal-img').src = imgSrc;
 
-    //edit modal
-    if (feature == 'edit-item') {
-        const input = document.querySelector('.input--edit');
-        const items = list();
+        //edit modal
+        if (hasInput) {
+            modalPosition(true);
 
-        input.classList.remove('hidden');
-        input.value = items[index].title;
-        input.focus();
+            const input = document.querySelector('.input--edit');
+            const items = list();
 
+            input.classList.remove('hidden');
+            input.value = items[index].title;
+            input.focus();
+        }
         //delete modal
-    } else {
-        document.querySelector('.input--edit').classList.add('hidden');
+        else {
+            modalPosition(false);
+            document.querySelector('.input--edit').classList.add('hidden');
+        }
+    })
+}
+
+function modalPosition(condition) {
+    const windowWidth = window.innerWidth;
+
+    if (condition && (windowWidth < 600)) {
+        const modalPosition = document.querySelector('#modal .backdrop')
+        modalPosition.style.alignItems = 'start';
+        modalPosition.style.paddingTop = '2.5rem';
+    }
+
+    else {
+        const modalPosition = document.querySelector('#modal .backdrop')
+        modalPosition.style.alignItems = 'center';
+        modalPosition.style.paddingTop = '0';
     }
 }
 
 function hideModal() {
     document.querySelector('#modal').classList.remove('is-open');
-    modalFeature = '';
-    itemIndex = '';
+    moduleRejectPromise?.();
+
+    moduleResolvePromise = null;
+    moduleRejectPromise = null;
 }
 
 function modalConfirmation() {
-    switch (modalFeature) {
-        case 'delete-shop-list':
-            const shoppingItems = list().filter((item) => !item.checked);
-
-            shoppingItems.forEach(function (item) {
-                remove(list().indexOf(item));
-            })
-
-            renderItems();
-            break;
-
-        case 'delete-purchased-list':
-            const purchasedItems = list().filter((item) => item.checked);
-
-            purchasedItems.forEach(function (item) {
-                remove(list().indexOf(item));
-            })
-
-            renderItems();
-            break;
-
-        case 'delete-item':
-            remove(itemIndex);
-            renderItems();
-            break;
-
-        case 'edit-item':
-            const value = document.querySelector('.input--edit').value;
-            edit(itemIndex, value);
-            renderItems();
-            break;
-
-        default:
-            console.log('feature not found!');
-    }
+    moduleResolvePromise?.();
     hideModal();
 }
